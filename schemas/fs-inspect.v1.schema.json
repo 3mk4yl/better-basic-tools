@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/fs-inspect.v1.schema.json",
+  "title": "Better Basic Tools FS Inspect v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.fs.inspect.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "data": { "$ref": "#/$defs/fs_inspection" }
+  },
+  "$defs": {
+    "fs_inspection": {
+      "type": "object",
+      "required": [
+        "path",
+        "path_bytes_hex",
+        "absolute_path",
+        "canonical_path",
+        "exists",
+        "kind",
+        "size_bytes",
+        "owner",
+        "group",
+        "mode",
+        "access",
+        "symlink_target",
+        "timestamps",
+        "warnings"
+      ],
+      "properties": {
+        "path": { "type": "string" },
+        "path_bytes_hex": { "type": "string", "pattern": "^([0-9a-f]{2})*$" },
+        "absolute_path": { "type": ["string", "null"] },
+        "canonical_path": { "type": ["string", "null"] },
+        "exists": { "type": "boolean" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "missing",
+            "regular-file",
+            "directory",
+            "symlink",
+            "socket",
+            "fifo",
+            "block-device",
+            "char-device",
+            "unknown"
+          ]
+        },
+        "size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "owner": { "anyOf": [{ "$ref": "#/$defs/owner" }, { "type": "null" }] },
+        "group": { "anyOf": [{ "$ref": "#/$defs/group" }, { "type": "null" }] },
+        "mode": { "anyOf": [{ "$ref": "#/$defs/mode" }, { "type": "null" }] },
+        "access": { "$ref": "#/$defs/access" },
+        "symlink_target": { "type": ["string", "null"] },
+        "timestamps": { "$ref": "#/$defs/timestamps" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "owner": {
+      "type": "object",
+      "required": ["uid", "name"],
+      "properties": {
+        "uid": { "type": "integer", "minimum": 0 },
+        "name": { "type": ["string", "null"] }
+      }
+    },
+    "group": {
+      "type": "object",
+      "required": ["gid", "name"],
+      "properties": {
+        "gid": { "type": "integer", "minimum": 0 },
+        "name": { "type": ["string", "null"] }
+      }
+    },
+    "mode": {
+      "type": "object",
+      "required": ["octal", "symbolic"],
+      "properties": {
+        "octal": { "type": "string", "pattern": "^[0-7]{4}$" },
+        "symbolic": { "type": "string", "pattern": "^[r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$" }
+      }
+    },
+    "access": {
+      "type": "object",
+      "required": ["readable", "writable", "executable"],
+      "properties": {
+        "readable": { "type": ["boolean", "null"] },
+        "writable": { "type": ["boolean", "null"] },
+        "executable": { "type": ["boolean", "null"] }
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "required": ["modified", "accessed", "changed", "created"],
+      "properties": {
+        "modified": { "type": ["string", "null"], "format": "date-time" },
+        "accessed": { "type": ["string", "null"], "format": "date-time" },
+        "changed": { "type": ["string", "null"], "format": "date-time" },
+        "created": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/net-listeners.v1.schema.json",
+  "title": "Better Basic Tools Network Listeners v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.net.listeners.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": { "$ref": "#/$defs/commandContext" },
+    "data": { "$ref": "#/$defs/listenerReport" }
+  },
+  "$defs": {
+    "commandContext": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "listenerReport": {
+      "type": "object",
+      "required": ["listeners", "listener_count", "warnings"],
+      "properties": {
+        "listeners": { "type": "array", "items": { "$ref": "#/$defs/listener" } },
+        "listener_count": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "listener": {
+      "type": "object",
+      "required": ["protocol", "address", "port", "inode", "pids", "processes"],
+      "properties": {
+        "protocol": { "type": "string", "enum": ["tcp", "tcp6", "udp", "udp6"] },
+        "address": { "type": "string" },
+        "port": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "inode": { "type": ["integer", "null"], "minimum": 0 },
+        "pids": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+        "processes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

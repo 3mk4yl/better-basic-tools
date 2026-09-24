@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/disk-usage.v1.schema.json",
+  "title": "Better Basic Tools Disk Usage v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.disk.usage.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "data": { "$ref": "#/$defs/diskUsage" }
+  },
+  "$defs": {
+    "hexBytes": { "type": "string", "pattern": "^([0-9a-f]{2})*$" },
+    "usageKind": {
+      "type": "string",
+      "enum": ["regular-file", "directory", "symlink", "other", "missing"]
+    },
+    "errorKind": {
+      "type": "string",
+      "enum": ["not-found", "permission-denied", "read-directory", "metadata", "directory-cycle"]
+    },
+    "diskUsage": {
+      "type": "object",
+      "required": [
+        "path",
+        "path_bytes_hex",
+        "absolute_path",
+        "exists",
+        "max_depth",
+        "one_filesystem",
+        "top_limit",
+        "total_bytes",
+        "apparent_bytes",
+        "entries_seen",
+        "directories_seen",
+        "files_seen",
+        "symlinks_seen",
+        "unreadable_entries",
+        "skipped_different_filesystem",
+        "largest_children",
+        "errors"
+      ],
+      "properties": {
+        "path": { "type": "string" },
+        "path_bytes_hex": { "$ref": "#/$defs/hexBytes" },
+        "absolute_path": { "type": ["string", "null"] },
+        "exists": { "type": "boolean" },
+        "max_depth": { "type": ["integer", "null"], "minimum": 0 },
+        "one_filesystem": { "type": "boolean" },
+        "top_limit": { "type": "integer", "minimum": 0 },
+        "total_bytes": { "type": "integer", "minimum": 0 },
+        "apparent_bytes": { "type": "integer", "minimum": 0 },
+        "entries_seen": { "type": "integer", "minimum": 0 },
+        "directories_seen": { "type": "integer", "minimum": 0 },
+        "files_seen": { "type": "integer", "minimum": 0 },
+        "symlinks_seen": { "type": "integer", "minimum": 0 },
+        "unreadable_entries": { "type": "integer", "minimum": 0 },
+        "skipped_different_filesystem": { "type": "integer", "minimum": 0 },
+        "largest_children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/usageChild" }
+        },
+        "errors": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/usageError" }
+        }
+      }
+    },
+    "usageChild": {
+      "type": "object",
+      "required": ["path", "path_bytes_hex", "kind", "total_bytes", "apparent_bytes"],
+      "properties": {
+        "path": { "type": "string" },
+        "path_bytes_hex": { "$ref": "#/$defs/hexBytes" },
+        "kind": { "$ref": "#/$defs/usageKind" },
+        "total_bytes": { "type": "integer", "minimum": 0 },
+        "apparent_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "usageError": {
+      "type": "object",
+      "required": ["path", "path_bytes_hex", "kind", "message"],
+      "properties": {
+        "path": { "type": "string" },
+        "path_bytes_hex": { "$ref": "#/$defs/hexBytes" },
+        "kind": { "$ref": "#/$defs/errorKind" },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

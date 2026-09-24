@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/host-snapshot.v1.schema.json",
+  "title": "Better Basic Tools Host Snapshot v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at",
+    "command",
+    "data"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bbt.host.snapshot.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "command": {
+      "type": "object",
+      "required": [
+        "argv",
+        "argv_bytes_hex",
+        "cwd",
+        "effective_uid"
+      ],
+      "properties": {
+        "argv": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^([0-9a-f]{2})*$"
+          }
+        },
+        "cwd": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_uid": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "data": {
+      "$ref": "#/$defs/hostSnapshot"
+    }
+  },
+  "$defs": {
+    "hostSnapshot": {
+      "type": "object",
+      "required": [
+        "hostname",
+        "kernel",
+        "os",
+        "current_user",
+        "cpu",
+        "uptime",
+        "load_average",
+        "memory",
+        "filesystems",
+        "warnings"
+      ],
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "kernel": {
+          "$ref": "#/$defs/kernel"
+        },
+        "os": {
+          "$ref": "#/$defs/os"
+        },
+        "uptime": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/uptime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "load_average": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/loadAverage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "memory": {
+          "$ref": "#/$defs/memory"
+        },
+        "filesystems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filesystem"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "current_user": {
+          "$ref": "#/$defs/user"
+        },
+        "cpu": {
+          "$ref": "#/$defs/cpu"
+        }
+      }
+    },
+    "kernel": {
+      "type": "object",
+      "required": [
+        "sysname",
+        "release",
+        "version",
+        "machine"
+      ],
+      "properties": {
+        "sysname": {
+          "type": "string"
+        },
+        "release": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "machine": {
+          "type": "string"
+        }
+      }
+    },
+    "os": {
+      "type": "object",
+      "required": [
+        "pretty_name",
+        "id",
+        "version_id"
+      ],
+      "properties": {
+        "pretty_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "uptime": {
+      "type": "object",
+      "required": [
+        "seconds"
+      ],
+      "properties": {
+        "seconds": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "loadAverage": {
+      "type": "object",
+      "required": [
+        "one_minute",
+        "five_minutes",
+        "fifteen_minutes"
+      ],
+      "properties": {
+        "one_minute": {
+          "type": "number",
+          "minimum": 0
+        },
+        "five_minutes": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fifteen_minutes": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "required": [
+        "total_bytes",
+        "available_bytes",
+        "free_bytes",
+        "used_percent"
+      ],
+      "properties": {
+        "total_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "available_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "free_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "used_percent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "filesystem": {
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "fstype",
+        "total_bytes",
+        "available_bytes",
+        "used_percent"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "fstype": {
+          "type": "string"
+        },
+        "total_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "available_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "used_percent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "required": [
+        "uid",
+        "effective_uid",
+        "gid",
+        "effective_gid",
+        "username",
+        "home",
+        "shell"
+      ],
+      "properties": {
+        "uid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "effective_uid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "effective_gid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "username": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "home": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shell": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "cpu": {
+      "type": "object",
+      "required": [
+        "logical_cpus",
+        "model_name",
+        "vendor_id",
+        "cpu_mhz"
+      ],
+      "properties": {
+        "logical_cpus": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "model_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vendor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cpu_mhz": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

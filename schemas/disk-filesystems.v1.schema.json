@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/disk-filesystems.v1.schema.json",
+  "title": "Better Basic Tools Disk Filesystems v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.disk.filesystems.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "data": { "$ref": "#/$defs/filesystemReport" }
+  },
+  "$defs": {
+    "filesystemReport": {
+      "type": "object",
+      "required": ["filesystems", "warnings"],
+      "properties": {
+        "filesystems": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/filesystem" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "filesystem": {
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "fstype",
+        "total_bytes",
+        "available_bytes",
+        "used_percent"
+      ],
+      "properties": {
+        "source": { "type": "string" },
+        "target": { "type": "string" },
+        "fstype": { "type": "string" },
+        "total_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "available_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "used_percent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/agent-report.v1.schema.json",
+  "title": "Better Basic Tools Agent Report v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "summary", "severity", "facts"],
+  "properties": {
+    "schema": { "const": "bbt.agent.report.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "subject": { "type": "object" },
+    "summary": { "type": "string" },
+    "severity": {
+      "type": "string",
+      "enum": ["ok", "info", "warning", "critical", "unknown"]
+    },
+    "facts": { "type": "array", "items": { "$ref": "#/$defs/fact" } },
+    "interpretation": { "type": "array", "items": { "type": "string" } },
+    "safe_next_steps": { "type": "array", "items": { "$ref": "#/$defs/next_step" } },
+    "risky_next_steps": { "type": "array", "items": { "$ref": "#/$defs/next_step" } }
+  },
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "required": ["key", "severity", "evidence"],
+      "properties": {
+        "key": { "type": "string" },
+        "value": {},
+        "severity": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "next_step": {
+      "type": "object",
+      "required": ["command", "risk", "purpose"],
+      "properties": {
+        "command": { "type": "string" },
+        "risk": { "type": "string" },
+        "purpose": { "type": "string" },
+        "requires_confirmation": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[package]
+name = "bbt-cli"
+publish = false
+version = "0.2.0-alpha.2"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+bbt-core = { path = "../bbt-core" }
+clap.workspace = true
+serde.workspace = true

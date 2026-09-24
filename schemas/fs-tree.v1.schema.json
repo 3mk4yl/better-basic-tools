@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/fs-tree.v1.schema.json",
+  "title": "Better Basic Tools FS Tree v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.fs.tree.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "data": { "$ref": "#/$defs/fs_tree" }
+  },
+  "$defs": {
+    "fs_tree": {
+      "type": "object",
+      "required": [
+        "path",
+        "path_bytes_hex",
+        "absolute_path",
+        "exists",
+        "max_depth",
+        "one_filesystem",
+        "root",
+        "entries_seen",
+        "max_depth_reached",
+        "skipped_different_filesystem",
+        "warnings"
+      ],
+      "properties": {
+        "path": { "type": "string" },
+        "path_bytes_hex": { "type": "string", "pattern": "^([0-9a-f]{2})*$" },
+        "absolute_path": { "type": ["string", "null"] },
+        "exists": { "type": "boolean" },
+        "max_depth": { "type": ["integer", "null"], "minimum": 0 },
+        "one_filesystem": { "type": "boolean" },
+        "root": {
+          "oneOf": [{ "$ref": "#/$defs/tree_node" }, { "type": "null" }]
+        },
+        "entries_seen": { "type": "integer", "minimum": 0 },
+        "max_depth_reached": { "type": ["integer", "null"], "minimum": 0 },
+        "skipped_different_filesystem": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tree_node": {
+      "type": "object",
+      "required": ["name", "name_bytes_hex", "kind", "total_bytes", "apparent_bytes"],
+      "properties": {
+        "name": { "type": "string" },
+        "name_bytes_hex": { "type": "string", "pattern": "^([0-9a-f]{2})*$" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "regular-file",
+            "directory",
+            "symlink",
+            "socket",
+            "fifo",
+            "block-device",
+            "char-device",
+            "unknown"
+          ]
+        },
+        "total_bytes": { "type": "integer", "minimum": 0 },
+        "apparent_bytes": { "type": "integer", "minimum": 0 },
+        "entries_seen": { "type": "integer", "minimum": 1 },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/tree_node" }
+        }
+      }
+    }
+  }
+}

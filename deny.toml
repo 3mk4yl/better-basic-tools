@@ -1,0 +1,43 @@
+# cargo-deny configuration for Better Basic Tools.
+# Run with: cargo deny check
+
+[graph]
+targets = ["x86_64-unknown-linux-gnu", "aarch64-unknown-linux-gnu"]
+all-features = true
+
+[advisories]
+db-path = "$CARGO_HOME/advisory-dbs"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+
+[licenses]
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Unicode-3.0",
+    "BSL-1.0",
+    "Unlicense",
+]
+confidence-threshold = 0.9
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+# Workspace-internal path dependencies are declared without versions; that is intentional.
+allow-wildcard-paths = true
+# BBT is local-only by design: no network stacks belong in the dependency graph.
+deny = [
+    { crate = "reqwest", reason = "BBT is local-only; no HTTP clients allowed" },
+    { crate = "hyper", reason = "BBT is local-only; no HTTP stacks allowed" },
+    { crate = "ureq", reason = "BBT is local-only; no HTTP clients allowed" },
+    { crate = "curl", reason = "BBT is local-only; no HTTP clients allowed" },
+    { crate = "openssl", reason = "BBT is local-only; no TLS stacks allowed" },
+    { crate = "native-tls", reason = "BBT is local-only; no TLS stacks allowed" },
+    { crate = "rustls", reason = "BBT is local-only; no TLS stacks allowed" },
+    { crate = "tokio", reason = "BBT is synchronous local tooling; async network runtimes are out of scope" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

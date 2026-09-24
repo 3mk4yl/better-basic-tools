@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">BBT — Better Basic Tools</title>
+  <desc id="desc">A dark, text-led banner for Better Basic Tools, a local Linux observation substrate. It highlights read-only observation, structured output, and local-only operation.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#081019"/>
+      <stop offset="52%" stop-color="#0c1d29"/>
+      <stop offset="100%" stop-color="#0a131c"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9ef01a"/>
+      <stop offset="100%" stop-color="#38d9d6"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 H 0 V 48" fill="none" stroke="#9cc6d5" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="1332" cy="278" r="244" fill="#38d9d6" fill-opacity="0.14" filter="url(#softGlow)"/>
+  <circle cx="1460" cy="688" r="222" fill="#9ef01a" fill-opacity="0.11" filter="url(#softGlow)"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1068 174 H1396 L1488 266 V668 H1244" stroke="#9cc6d5" stroke-opacity="0.23" stroke-width="2"/>
+    <path d="M1148 266 H1362 L1418 322 V590 H1268" stroke="#38d9d6" stroke-opacity="0.55" stroke-width="3"/>
+    <path d="M1074 486 H1186 L1230 442 H1376" stroke="#9ef01a" stroke-opacity="0.8" stroke-width="4"/>
+    <path d="M1094 666 H1210 L1260 616 H1418" stroke="#9cc6d5" stroke-opacity="0.42" stroke-width="2"/>
+  </g>
+
+  <g fill="#0e2631" stroke="#38d9d6" stroke-width="3">
+    <circle cx="1148" cy="266" r="13"/>
+    <circle cx="1418" cy="322" r="13"/>
+    <circle cx="1230" cy="442" r="13"/>
+    <circle cx="1260" cy="616" r="13"/>
+  </g>
+  <g fill="#9ef01a">
+    <circle cx="1074" cy="486" r="8"/>
+    <circle cx="1376" cy="486" r="8"/>
+  </g>
+
+  <rect x="122" y="152" width="154" height="40" rx="20" fill="#9ef01a" fill-opacity="0.13" stroke="#9ef01a" stroke-opacity="0.65"/>
+  <text x="199" y="178" text-anchor="middle" fill="#c7ff78" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2">LINUX ONLY</text>
+
+  <text x="120" y="350" fill="#f4fbff" font-family="Arial, Helvetica, sans-serif" font-size="168" font-weight="800" letter-spacing="-8">BBT</text>
+  <rect x="126" y="386" width="652" height="8" rx="4" fill="url(#accent)"/>
+  <text x="120" y="470" fill="#f4fbff" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-1">Better Basic Tools</text>
+  <text x="122" y="540" fill="#b8ccd5" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="400">A local observation substrate for Linux agents and operators.</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing="1.5">
+    <rect x="122" y="656" width="212" height="50" rx="25" fill="#142833" stroke="#446672"/>
+    <text x="228" y="688" text-anchor="middle" fill="#d5e8ef">READ ONLY</text>
+    <rect x="350" y="656" width="222" height="50" rx="25" fill="#142833" stroke="#446672"/>
+    <text x="461" y="688" text-anchor="middle" fill="#d5e8ef">LOCAL ONLY</text>
+    <rect x="588" y="656" width="278" height="50" rx="25" fill="#142833" stroke="#446672"/>
+    <text x="727" y="688" text-anchor="middle" fill="#d5e8ef">STRUCTURED OUTPUT</text>
+  </g>
+
+  <text x="122" y="786" fill="#6f929f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" letter-spacing="1.2">HUMAN TERMINAL · JSON / YAML · AGENT REPORTS</text>
+</svg>

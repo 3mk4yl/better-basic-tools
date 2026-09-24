@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/proc-list.v1.schema.json",
+  "title": "Better Basic Tools Process List v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.proc.list.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": { "$ref": "#/$defs/commandContext" },
+    "data": { "$ref": "#/$defs/procList" }
+  },
+  "$defs": {
+    "commandContext": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "procList": {
+      "type": "object",
+      "required": ["processes", "process_count", "warnings"],
+      "properties": {
+        "processes": { "type": "array", "items": { "$ref": "#/$defs/procSummary" } },
+        "process_count": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "procSummary": {
+      "type": "object",
+      "required": ["pid", "parent_pid", "name", "state", "uid", "user", "vm_rss_bytes", "command_line"],
+      "properties": {
+        "pid": { "type": "integer", "minimum": 0 },
+        "parent_pid": { "type": ["integer", "null"], "minimum": 0 },
+        "name": { "type": ["string", "null"] },
+        "state": { "type": ["string", "null"] },
+        "uid": { "type": ["integer", "null"], "minimum": 0 },
+        "user": { "type": ["string", "null"] },
+        "vm_rss_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "command_line": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

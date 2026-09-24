@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/proc-inspect.v1.schema.json",
+  "title": "Better Basic Tools Process Inspect v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.proc.inspect.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": { "type": "array", "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" } },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "data": { "$ref": "#/$defs/procInspection" }
+  },
+  "$defs": {
+    "procInspection": {
+      "type": "object",
+      "required": ["pid", "exists", "name", "state", "parent_pid", "child_pids", "command_line", "command_line_bytes_hex", "executable", "cwd", "uid", "user", "gid", "threads", "memory", "warnings"],
+      "properties": {
+        "pid": { "type": "integer", "minimum": 0 },
+        "exists": { "type": "boolean" },
+        "name": { "type": ["string", "null"] },
+        "state": { "type": ["string", "null"] },
+        "parent_pid": { "type": ["integer", "null"], "minimum": 0 },
+        "child_pids": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+        "command_line": { "type": "array", "items": { "type": "string" } },
+        "command_line_bytes_hex": { "type": "array", "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" } },
+        "executable": { "type": ["string", "null"] },
+        "cwd": { "type": ["string", "null"] },
+        "uid": { "type": ["integer", "null"], "minimum": 0 },
+        "user": { "type": ["string", "null"] },
+        "gid": { "type": ["integer", "null"], "minimum": 0 },
+        "threads": { "type": ["integer", "null"], "minimum": 0 },
+        "memory": { "$ref": "#/$defs/procMemory" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "procMemory": {
+      "type": "object",
+      "required": ["vm_peak_bytes", "vm_size_bytes", "vm_rss_bytes", "vm_hwm_bytes"],
+      "properties": {
+        "vm_peak_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "vm_size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "vm_rss_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "vm_hwm_bytes": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    }
+  }
+}

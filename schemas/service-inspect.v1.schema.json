@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://better-basic-tools.local/schemas/service-inspect.v1.schema.json",
+  "title": "Better Basic Tools Service Inspect v1",
+  "type": "object",
+  "required": ["schema", "generated_at", "command", "data"],
+  "properties": {
+    "schema": { "const": "bbt.service.inspect.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "command": { "$ref": "#/$defs/commandContext" },
+    "data": { "$ref": "#/$defs/serviceInspection" }
+  },
+  "$defs": {
+    "commandContext": {
+      "type": "object",
+      "required": ["argv", "argv_bytes_hex", "cwd", "effective_uid"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "argv_bytes_hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^([0-9a-f]{2})*$" }
+        },
+        "cwd": { "type": ["string", "null"] },
+        "effective_uid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "serviceInspection": {
+      "type": "object",
+      "required": ["name", "exists", "load_state", "active_state", "sub_state", "unit_file_state", "description", "main_pid", "fragment_path", "exec_main_status", "warnings"],
+      "properties": {
+        "name": { "type": "string" },
+        "exists": { "type": "boolean" },
+        "load_state": { "type": ["string", "null"] },
+        "active_state": { "type": ["string", "null"] },
+        "sub_state": { "type": ["string", "null"] },
+        "unit_file_state": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "main_pid": { "type": ["integer", "null"], "minimum": 0 },
+        "fragment_path": { "type": ["string", "null"] },
+        "exec_main_status": { "type": ["integer", "null"] },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
